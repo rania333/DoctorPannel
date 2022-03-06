@@ -1,0 +1,92 @@
+<div class="container d-flex flex-column justify-content-center py-5">
+  <h1 class="fs-2 my-5 fw-bolder">Create Account</h1>
+  <div id="btns" class="d-flex justify-content-center">
+    <div class="button-container mx-2">
+      <button mat-mini-fab color="light">
+        <i class="fa fa-facebook"></i>
+      </button>
+    </div>
+    <div class="button-container mx-2" >
+      <button mat-mini-fab color="light">
+        <i class="fa fa-twitter"></i>
+      </button>
+    </div>
+    <div class="button-container mx-2">
+      <button mat-mini-fab color="light" >
+        <i class="fa fa-google"></i>
+      </button>
+    </div>
+  </div>
+  <small>or use your email for registration </small>
+  <form class="inputs d-flex flex-column py-3" [formGroup]="signupForm"
+  (ngSubmit)="onSignup(email.value, pass.value, phone.value, name.value)">
+    <mat-form-field appearance="fill">
+      <mat-label>Enter your name</mat-label>
+      <input matInput name="name" formControlName="name" #name>
+      <button mat-icon-button matSuffix >
+        <mat-icon>person</mat-icon>
+      </button>
+      <mat-error *ngIf="hasErr('name', 'required')">
+        This field is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Enter your Email</mat-label>
+      <input matInput name="email" formControlName="email" #email>
+      <button mat-icon-button matSuffix >
+        <mat-icon>mail</mat-icon>
+      </button>
+      <mat-error *ngIf="hasErr('email', 'required')">
+        This field is required
+      </mat-error>
+      <mat-error *ngIf="hasErr('email', 'email')">
+        Invalid email
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Enter your phone number</mat-label>
+      <input matInput name="phone" formControlName="phone" #phone/>
+      <mat-icon matSuffix>phone</mat-icon>
+      <mat-error *ngIf="hasErr('phone', 'required')">
+        This field is required
+      </mat-error>
+      <mat-error *ngIf="hasErr('phone', 'pattern')">
+        Invalid phone format
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Enter your password</mat-label>
+      <input matInput [type]="hide ? 'password' : 'text'" name="pass" #pass formControlName="pass">
+      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error *ngIf="hasErr('pass', 'required')">
+        This field is required
+      </mat-error>
+      <mat-error *ngIf="hasErr('pass', 'pattern')">
+        The password must be contain at least one uppercase,
+        lowercase, special character with 8 length
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Confirm your password</mat-label>
+      <input matInput [type]="hide ? 'password' : 'text'" name="pass2" formControlName="pass2">
+      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error *ngIf="hasErr('pass2', 'required')">
+        This field is required
+      </mat-error>
+      <mat-error *ngIf="hasErr('pass2', 'pattern')">
+        The password must be contain at least one uppercase,
+        lowercase, special character with 8 length
+      </mat-error>
+      <mat-error *ngIf="signupForm.errors?.['notEqual']">
+        Confirm password must match password.
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-stroked-button [disabled]="signupForm.invalid"
+    type="submit" class="w-25" id="btn">SIGN UP</button>
+  </form>
+</div>

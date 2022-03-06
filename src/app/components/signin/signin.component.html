@@ -1,0 +1,38 @@
+<div class="container-fluid" id="login">
+  <div class="row">
+    <!-- <div class="col-2">
+      <img src="../../../assets/logo.png" alt="" width="200" height="200">
+    </div> -->
+    <div class="col-6 my-5" id="card">
+      <h1 class="fs-2 my-3 fw-bolder">Welcome</h1>
+      <small>Enter your email and password to continue</small>
+      <form [formGroup]="signinForm" class="inputs d-flex flex-column py-3">
+        <mat-form-field appearance="legacy">
+          <mat-label>Enter your Email</mat-label>
+          <input matInput name="email" formControlName="email">
+          <button mat-icon-button matSuffix >
+            <mat-icon>mail</mat-icon>
+          </button>
+          <mat-error *ngIf="hasErr('email', 'required')">
+            This field is required
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="legacy">
+          <mat-label>Enter your password</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" name="pass" formControlName="pass">
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="hasErr('pass', 'required')">
+            This field is required
+          </mat-error>
+        </mat-form-field>
+        <div id="btns" class="d-flex my-3">
+          <a routerLink="/auth"> I don't have an account! <span>SIGN UP</span></a>
+          <button mat-stroked-button [disabled]="signinForm.invalid"
+          type="submit" class="w-25" id="btn">SIGN IN</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
