@@ -6,10 +6,11 @@
     <div class="col-6 my-5" id="card">
       <h1 class="fs-2 my-3 fw-bolder">Welcome</h1>
       <small>Enter your email and password to continue</small>
-      <form [formGroup]="signinForm" class="inputs d-flex flex-column py-3">
+      <form [formGroup]="signinForm" class="inputs d-flex flex-column py-3"
+      (ngSubmit)="onSignin(email.value, pass.value)">
         <mat-form-field appearance="legacy">
           <mat-label>Enter your Email</mat-label>
-          <input matInput name="email" formControlName="email">
+          <input matInput name="email" formControlName="email" #email>
           <button mat-icon-button matSuffix >
             <mat-icon>mail</mat-icon>
           </button>
@@ -19,7 +20,8 @@
         </mat-form-field>
         <mat-form-field appearance="legacy">
           <mat-label>Enter your password</mat-label>
-          <input matInput [type]="hide ? 'password' : 'text'" name="pass" formControlName="pass">
+          <input matInput [type]="hide ? 'password' : 'text'" name="pass"
+          formControlName="pass" #pass>
           <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
           </button>

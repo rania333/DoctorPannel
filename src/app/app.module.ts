@@ -13,6 +13,7 @@ import {AngularFireModule} from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
 import { AuthComponent } from './components/auth/auth.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SigninComponent,
     SignupComponent,
     ProfileComponent,
-    AuthComponent
+    AuthComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,

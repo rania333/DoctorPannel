@@ -3,10 +3,11 @@ export interface IDoctor {
   name: string,
   email: string,
   phone: string,
-  city: string
-  dpt: string,
-  title: string,
-  price: string,
+  city?: string
+  dpt?: string,
+  title?: string,
+  price?: string,
   status: string,
-  nationalID: string
+  nationalID?: string
+  DOB?: string
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from 'src/app/services/auth.service';
 import { confirmPassValidator } from 'src/app/validators/confirmPass';
 
@@ -12,7 +13,7 @@ export class SignupComponent implements OnInit {
   hide = true;
   signupForm: FormGroup;
   isSigned = false;
-  constructor(private _formBuilder: FormBuilder,
+  constructor(private _formBuilder: FormBuilder, private _snackbar:MatSnackBar,
               private authSer: AuthService) {
     this.signupForm = this._formBuilder.group({
       name: ['', [Validators.required]],
@@ -32,13 +33,20 @@ export class SignupComponent implements OnInit {
   }
 
   async onSignup(email: string, pass: string, phone:string, name: string) {
-    await this.authSer.signUp(email, pass);
-    //add to user collection
-    this.authSer.addUser({name, email, phone});
-    if(this.authSer.isLoggedIn) {
-      this.isSigned = true;
-    }
+    await this.authSer.signUp(email, pass).then(done => {
+      //add to user collection
+      this.authSer.addUser({name, email, phone})
+      .then(done => {
+        if(this.authSer.isLoggedIn) {
+          this.isSigned = true;
+        }
+      });
+    }).catch(err => {
+      console.log(err.message);
+    })
   }
+
+
 
   hasErr(control: string, err: string): boolean {
     if((this.signupForm.controls[control].dirty) &&
