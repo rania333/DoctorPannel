@@ -1,3 +1,205 @@
-<p>profile works!</p>
+<div class="container-fluid m-0 py-5" id="profileContainer">
+  <mat-card class="mx-5">
+    <app-header [userName]="userData.name"></app-header>
+    <mat-divider></mat-divider>
+    <div class="row mx-4 my-3 justify-content-between" id="profile">
+      <div class="col-2">
+        <div class="d-flex flex-column">
+          <img [src]="userData.img" alt="user img"
+          width="200" height="150">
+          <div class="my-2 content">
+            <h2>About Doctor</h2>
+            <p><span>Title: </span> {{userData.title}}</p>
+            <p><span>Department: </span> {{userData.dpt}}</p>
+            <p><span>test: </span>fhdhgjfhgjdfhgjgfgd
+              ffdfdfjdhjgdhgfdhgjdhgjdhgjdhgjdhgjdhgjdhdfhgdjhgjdg</p>
+          </div>
+          <div class="my-2 content">
+            <h2>About Clinic</h2>
+            <p><span>City: </span> {{userData.city}}</p>
+            <p><span>Area: </span> {{userData.area}}</p>
+            <p><span>Fees: </span> {{userData.price}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-9">
+        <h1>{{userData.name}}</h1>
+        <h5>{{userData.title}}</h5>
+        <div class="tabs">
+          <mat-tab-group>
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">person</mat-icon>
+                Basic Info
+              </ng-template>
+              <div class="row mx-2">
+                <small>Contact Info</small>
+              </div>
+              <div class="row ulContainer" id="ulContainer">
+                <div class="col-1 my-2">
+                  <ul>
+                    <li>Name</li>
+                    <li>Email</li>
+                    <li>Phone</li>
+                    <li>Status</li>
+                  </ul>
+                </div>
+                <div class="col-5 my-2">
+                  <ul>
+                    <li>{{userData.name}}</li>
+                    <li>{{userData.email}}</li>
+                    <li>{{userData.phone}}</li>
+                    <li>{{userData.status}}</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="row mx-2">
+                <small class="mb-n2"> Drived Info </small>
+              </div>
+              <div class="row ulContainer">
+                <div class="col-1 my-2">
+                  <ul>
+                    <li>ID</li>
+                    <li>Birthday</li>
+                  </ul>
+                </div>
+                <div class="col-5 my-2">
+                  <ul>
+                    <li>{{userData.nationalID}}</li>
+                    <li>{{userData.nationalID | birthday}}</li>
+                  </ul>
+                </div>
+              </div>
 
-<p>{{currentID`}}</p>
+              <div class="row mx-2">
+                <small>Other Info</small>
+              </div>
+              <div class="row ulContainer" id="ulContainer">
+                <div class="col-1 my-2">
+                  <ul>
+                    <li>BIO</li>
+                    <li>Address</li>
+                  </ul>
+                </div>
+                <div class="col-5 my-2">
+                  <ul>
+                    <li>{{userData.BIO}}</li>
+                    <li>{{userData.address}}</li>
+                  </ul>
+                </div>
+              </div>
+            </mat-tab>
+
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">edit</mat-icon>
+                Edit Profile
+              </ng-template>
+              <div class="row mx-2">
+                  <div class="col-10 my-5" id="card">
+                    <h1 class="fs-2 my-3 fw-bolder">Edit Profile</h1>
+                    <small>
+                      Unfortunately, you are restricted to
+                      edit a limited entries in order to modify more entries, You can contact the admin.
+                    </small>
+                    <form [formGroup]="userProfile" class="inputs d-flex flex-column py-3"
+                    (ngSubmit)="EditProfile()">
+                      <div class="row">
+                        <mat-form-field appearance="legacy" class="col-6">
+                          <mat-label>Enter BIO in English</mat-label>
+                          <input matInput formControlName="BIO" name="BIO" #BIO>
+                          <button mat-icon-button matSuffix >
+                            <mat-icon>info</mat-icon>
+                          </button>
+                          <mat-error *ngIf="hasErr('BIO', 'minlength')">
+                            you must enter 5 characters at least
+                          </mat-error>
+                          <mat-error *ngIf="hasErr('BIO', 'pattern')">
+                            you must type here in English only
+                          </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="legacy" class="col-6">
+                          <mat-label>Enter BIO in Arabic</mat-label>
+                          <input matInput formControlName="BIOAR" name="BIOAR" #BIOAR>
+                          <button mat-icon-button matSuffix >
+                            <mat-icon>info</mat-icon>
+                          </button>
+                          <mat-error *ngIf="hasErr('BIOAR', 'minlength')">
+                            you must enter 5 characters at least
+                          </mat-error>
+                          <mat-error *ngIf="hasErr('BIOAR', 'pattern')">
+                            you must type here in Arabic only
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div class="row">
+                        <mat-form-field appearance="legacy" class="col-6">
+                          <mat-label>Enter Address in English</mat-label>
+                          <input matInput name="address" #address
+                          formControlName="address">
+                          <button mat-icon-button matSuffix >
+                            <mat-icon>room</mat-icon>
+                          </button>
+                          <mat-error *ngIf="hasErr('address', 'pattern')">
+                            You must enter valid address(1 maddi, cairo)
+                          </mat-error>
+                        </mat-form-field>
+                        <mat-form-field appearance="legacy" class="col-6">
+                          <mat-label>Enter Address in Arabic</mat-label>
+                          <input matInput name="addressAR" #addressAR
+                          formControlName="addressAR">
+                          <button mat-icon-button matSuffix >
+                            <mat-icon>room</mat-icon>
+                          </button>
+                          <mat-error *ngIf="hasErr('addressAR', 'pattern')">
+                            You must enter valid address like (1 maddi, cairo)
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+
+
+                      <mat-form-field appearance="legacy">
+                        <mat-label>Enter Image</mat-label>
+                        <input matInput name="img" #img url
+                        formControlName="img">
+                        <button mat-icon-button matSuffix >
+                          <mat-icon>photo_camera</mat-icon>
+                        </button>
+                        <mat-error>
+                          This field is required
+                        </mat-error>
+                      </mat-form-field>
+                      <!-- <div class="row py-3">
+                        <div class="col-6">
+                          <mat-label>Gender</mat-label>
+                          <mat-radio-group class="mx-5 my-2"
+                            formArrayName="gender">
+                              <mat-radio-button value="male" class="mx-3"
+                              [checked]="Gender == 'male'">Male
+                              </mat-radio-button>
+                              <mat-radio-button value="female"
+                              [checked]="Gender == 'female'">Female</mat-radio-button>
+                          </mat-radio-group>
+                        </div> -->
+                      <!-- </div> -->
+                      <button mat-stroked-button [disabled]="userProfile.invalid"
+                      type="submit" class="w-25" id="btn">Edit</button>
+                    </form>
+                </div>
+              </div>
+            </mat-tab>
+
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">event</mat-icon>
+                Timetable
+              </ng-template>
+
+              Content 3
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

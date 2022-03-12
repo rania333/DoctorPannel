@@ -19,17 +19,35 @@
   </div>
   <small>or use your email for registration </small>
   <form class="inputs d-flex flex-column py-3" [formGroup]="signupForm"
-  (ngSubmit)="onSignup(email.value, pass.value, phone.value, name.value)">
-    <mat-form-field appearance="fill">
-      <mat-label>Enter your name</mat-label>
-      <input matInput name="name" formControlName="name" #name>
-      <button mat-icon-button matSuffix >
-        <mat-icon>person</mat-icon>
-      </button>
-      <mat-error *ngIf="hasErr('name', 'required')">
-        This field is required
-      </mat-error>
-    </mat-form-field>
+  (ngSubmit)="onSignup(email.value, pass.value, phone.value, name.value, nameAR.value)">
+    <div class="row">
+      <mat-form-field appearance="fill" class="col-6">
+        <mat-label>Enter your name in Arabic</mat-label>
+        <input matInput name="nameAR" formControlName="nameAR" #nameAR>
+        <button mat-icon-button matSuffix >
+          <mat-icon>person</mat-icon>
+        </button>
+        <mat-error *ngIf="hasErr('nameAR', 'required')">
+          This field is required
+        </mat-error>
+        <mat-error *ngIf="hasErr('nameAR', 'pattern')">
+          You must type here in Arabic only!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="col-6">
+        <mat-label>Enter your name in English</mat-label>
+        <input matInput name="name" formControlName="name" #name>
+        <button mat-icon-button matSuffix >
+          <mat-icon>person</mat-icon>
+        </button>
+        <mat-error *ngIf="hasErr('name', 'required')">
+          This field is required
+        </mat-error>
+        <mat-error *ngIf="hasErr('name', 'pattern')">
+          You must type here in English only!
+        </mat-error>
+      </mat-form-field>
+    </div>
     <mat-form-field appearance="fill">
       <mat-label>Enter your Email</mat-label>
       <input matInput name="email" formControlName="email" #email>

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { AuthDialogComponent } from '../auth-dialog/auth-dialog.component';
 import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
@@ -16,7 +18,8 @@ export class SigninComponent implements OnInit {
   isSigned= false;
   currentID: string='';
   constructor(private _formBuilder: FormBuilder, private _dialog:MatDialog,
-    private authSer: AuthService, private _router: Router) {
+    private authSer: AuthService, private _router: Router,
+    private _snackbar: MatSnackBar) {
       this.signinForm = this._formBuilder.group({
         email: ['', [Validators.required]],
         pass: ['', [Validators.required]]
@@ -27,30 +30,16 @@ export class SigninComponent implements OnInit {
   }
 
   async onSignin(email: string, pass: string) {
-    //get id from local storage
-    const currentUID = localStorage.getItem('user') ? localStorage.getItem('user') : null;
-    const jsonData = JSON.parse(currentUID!);
-    this.authSer.getUser(jsonData.uid).subscribe(data => {
-      this.currentID = data.id; //to use it in redirect
-      const realData:any = data.data();
-      if(realData.status == 'pending') {
-        this._dialog.open(DialogComponent, {
-          width: '350px'
-        });
-      } else {
-        this.authSer.signIn(email, pass)
-        .then(data => {
-          if(this.authSer.isLoggedIn) {
-            this.isSigned = true
-          }
-          //redirect
-          this._router.navigate(['/profile', this.currentID])
-        })
-        .catch(err => {
-          console.log(err);
-        })
-      }
+    this.authSer.signIn(email, pass)
+    .then(user => {
+      console.log(user);
     })
+    .catch(err => {
+      console.log(err);
+    })
+
+
+
 
   }
 

@@ -7,6 +7,11 @@ import {MatFormFieldModule, MatLabel, MatSuffix} from '@angular/material/form-fi
 import {MatInputModule} from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatDialogModule} from '@angular/material/dialog';
+import {MatCardModule} from '@angular/material/card';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatRadioModule} from '@angular/material/radio';
+import {} from '@angular/material/';
 @NgModule({
   declarations: [],
   imports: [
@@ -19,7 +24,11 @@ import {MatDialogModule} from '@angular/material/dialog';
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
-    MatDialogModule
+    MatDialogModule,
+    MatCardModule,
+    MatRadioModule,
+    MatDividerModule,
+    MatTabsModule
   ]
 })
 export class AngularMaterialModule { }

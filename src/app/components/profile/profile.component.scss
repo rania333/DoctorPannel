@@ -1,0 +1,58 @@
+#profileContainer {
+  background-color: rgb(0, 112, 205);
+}
+.content {
+  border-top: 2px solid rgba(158, 158, 158, 0.603);
+  h2 {
+    color: rgb(0, 112, 205);
+  }
+  span {
+    color: rgb(0, 112, 205);
+    font-weight: 400;
+  }
+  p {
+    overflow-wrap: break-word;
+  }
+}
+::ng-deep {
+  .mat-tab-group.mat-primary .mat-ink-bar {
+    background-color: rgb(0, 112, 205);
+  }
+}
+::ng-deep {
+  .mat-tab-body {
+    .mat-tab-body-content {
+    overflow-x: hidden;
+    }
+  }
+  .mat-icon {
+    color: rgb(0, 112, 205);
+  }
+  .mat-radio-outer-circle {
+    border-color: #0070CD !important;
+  }
+  .mat-radio-inner-circle {
+    background-color: #0070CD !important;
+  }
+}
+
+.ulContainer {
+  ul {
+    list-style-type: none;
+    li {
+      line-height: 2em;
+    }
+  }
+}
+small {
+  color: rgb(0, 112, 205);
+}
+
+#btn {
+  background-color: #0070CD;
+  color: white;
+}
+
+h1 {
+  color: #0070CD;
+}

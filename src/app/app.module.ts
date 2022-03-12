@@ -14,6 +14,9 @@ import { environment } from 'src/environments/environment';
 import { AuthComponent } from './components/auth/auth.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { AuthDialogComponent } from './components/auth-dialog/auth-dialog.component';
+import { HeaderComponent } from './components/header/header.component';
+import { BirthdayPipe } from './pipes/birthday.pipe';
 
 @NgModule({
   declarations: [
@@ -22,7 +25,10 @@ import { DialogComponent } from './components/dialog/dialog.component';
     SignupComponent,
     ProfileComponent,
     AuthComponent,
-    DialogComponent
+    DialogComponent,
+    AuthDialogComponent,
+    HeaderComponent,
+    BirthdayPipe
   ],
   imports: [
     BrowserModule,

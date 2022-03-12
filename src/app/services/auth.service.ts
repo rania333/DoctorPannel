@@ -4,26 +4,46 @@ import { Injectable } from '@angular/core';
 import {AngularFireAuth} from '@angular/fire/compat/auth';
 import {AngularFirestore} from '@angular/fire/compat/firestore';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { AuthDialogComponent } from '../components/auth-dialog/auth-dialog.component';
+import { DialogComponent } from '../components/dialog/dialog.component';
+import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   isLoggedIn = false;
+  private isLoggedBehaviour: BehaviorSubject<boolean>;
   constructor(private _auth:AngularFireAuth,
               private _firestore: AngularFirestore,
               private _snackbar: MatSnackBar,
-              private _router: Router) {
+              private _router: Router,
+              private _dialog: MatDialog) {
+    this.isLoggedBehaviour = new BehaviorSubject<boolean>(this.isLogged);
   }
   async signIn (email: string, pass: string) {
     return this._auth.signInWithEmailAndPassword(email, pass)
     .then(res => {
       this.isLoggedIn = true;
       localStorage.setItem("user", JSON.stringify(res.user));
-      //open snackbar
-      this._snackbar.open("you're signedIn successfully",
-      'close', {
-            duration: 5000
-      });
+      return this.getUserByEmail(email)
+    })
+    .then(user => {
+      //check status
+      const userData:any = user;
+      if(userData && userData.status == 'pending') {
+        // open Dialog
+        this._dialog.open(DialogComponent)
+      } else {
+        //open snackbar
+        this._snackbar.open("you're signedIn successfully",
+        'close', {
+              duration: 5000
+        });
+        this.isLoggedBehaviour.next(true);
+        //redirect
+        this._router.navigate(['/profile', userData.id]);
+      }
 
     })
     .catch(err => {
@@ -52,8 +72,21 @@ export class AuthService {
   }
 
   logout() {
-    this._auth.signOut()
+    this._auth.signOut();
+    this.isLoggedBehaviour.next(false);
     localStorage.removeItem('user');
+    this._router.navigate(['/auth']);
+  }
+
+  //prop to use in guard
+  get isLogged(): boolean {
+    let isLogged;
+    if(localStorage.getItem('user')) {
+      isLogged = true;
+    } else {
+      isLogged = false
+    }
+    return isLogged;
   }
 
   addUser(data: any) {
@@ -64,7 +97,8 @@ export class AuthService {
       "name": data.name,
       "email": data.email,
       "phone": data.phone,
-      "status": "pending"
+      "status": "pending",
+      "id": jsonData.uid, //need in redirect profile/id
     })
     .then(res => {
       console.log('res', res);
@@ -78,6 +112,37 @@ export class AuthService {
   getUser(id: string) {
     let userData = this._firestore.collection('users').doc(id)
     .get();
-    return userData
+    return userData.toPromise()
+  }
+
+  async getUserByEmail(email: string) {
+    let result;
+    try {
+      let user = await this._firestore.collection('users',
+      (ref) => ref.where('email', "==" , email)).get().toPromise();
+      let userDate = user?.docs[0].data();
+      result = userDate;
+    } catch(err) {
+      console.log('from err', err);
+    }
+    return result
+  }
+
+  EditProfile(id: string, data:any) {
+    let userData = this._firestore.collection('users').doc(id)
+    .update(data);
+    userData.then(res => {
+      console.log('res', res);
+      this._snackbar.open('Your data is updated successfully',
+      'close', {
+        duration: 5000
+      })
+    })
+    .catch(err => {
+      this._snackbar.open(err,
+      'close', {
+        duration: 5000
+      })
+    })
   }
 }
