@@ -16,8 +16,8 @@ export class SignupComponent implements OnInit {
   constructor(private _formBuilder: FormBuilder, private _snackbar:MatSnackBar,
               private authSer: AuthService) {
     this.signupForm = this._formBuilder.group({
-      name: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
-      nameAR: ['', [Validators.required, Validators.pattern('^[\u0621-\u064A\u0660-\u0669 ]+$')]],
+      Name: ['', [Validators.required, Validators.pattern('^[a-zA-Z ]+$')]],
+      nameInArabic: ['', [Validators.required, Validators.pattern('^[\u0621-\u064A\u0660-\u0669 ]+$')]],
       email: ['', [Validators.required ,Validators.email]],
       pass: ['', [Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')]],
       pass2: ['', [Validators.required, Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')]],
@@ -33,11 +33,11 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  async onSignup(email: string, pass: string, phone:string, name: string, nameAR: String) {
+  async onSignup(email: string, pass: string, phone:string, Name: string, nameInArabic: String) {
     await this.authSer.signUp(email, pass)
     .then(done => {
       //add to user collection
-      this.authSer.addUser({name,nameAR, email, phone})
+      this.authSer.addUser({Name,nameInArabic, email, phone})
       .then(done => {
         if(this.authSer.isLoggedIn) {
           this.isSigned = true;

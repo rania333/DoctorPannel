@@ -23,27 +23,27 @@
     <div class="row">
       <mat-form-field appearance="fill" class="col-6">
         <mat-label>Enter your name in Arabic</mat-label>
-        <input matInput name="nameAR" formControlName="nameAR" #nameAR>
+        <input matInput name="nameInArabic" formControlName="nameInArabic" #nameAR>
         <button mat-icon-button matSuffix >
           <mat-icon>person</mat-icon>
         </button>
-        <mat-error *ngIf="hasErr('nameAR', 'required')">
+        <mat-error *ngIf="hasErr('nameInArabic', 'required')">
           This field is required
         </mat-error>
-        <mat-error *ngIf="hasErr('nameAR', 'pattern')">
+        <mat-error *ngIf="hasErr('nameInArabic', 'pattern')">
           You must type here in Arabic only!
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill" class="col-6">
         <mat-label>Enter your name in English</mat-label>
-        <input matInput name="name" formControlName="name" #name>
+        <input matInput name="Name" formControlName="Name" #name>
         <button mat-icon-button matSuffix >
           <mat-icon>person</mat-icon>
         </button>
-        <mat-error *ngIf="hasErr('name', 'required')">
+        <mat-error *ngIf="hasErr('Name', 'required')">
           This field is required
         </mat-error>
-        <mat-error *ngIf="hasErr('name', 'pattern')">
+        <mat-error *ngIf="hasErr('Name', 'pattern')">
           You must type here in English only!
         </mat-error>
       </mat-form-field>

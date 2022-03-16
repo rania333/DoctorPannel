@@ -1,30 +1,30 @@
 <div class="container-fluid m-0 py-5" id="profileContainer">
   <mat-card class="mx-5">
-    <app-header [userName]="userData.name"></app-header>
+    <app-header [userName]="userData.Name"></app-header>
     <mat-divider></mat-divider>
     <div class="row mx-4 my-3 justify-content-between" id="profile">
       <div class="col-2">
         <div class="d-flex flex-column">
-          <img [src]="userData.img" alt="user img"
-          width="200" height="150">
+          <img [src]="userData.Image" alt="user img"
+          width="200" height="200" style="border-radius: 50%;">
           <div class="my-2 content">
             <h2>About Doctor</h2>
-            <p><span>Title: </span> {{userData.title}}</p>
+            <p><span>Title: </span> {{userData.Title}}</p>
             <p><span>Department: </span> {{userData.dpt}}</p>
-            <p><span>test: </span>fhdhgjfhgjdfhgjgfgd
-              ffdfdfjdhjgdhgfdhgjdhgjdhgjdhgjdhgjdhgjdhdfhgdjhgjdg</p>
+            <p><span>Specialization: </span>
+            {{userData.Department}}</p>
           </div>
           <div class="my-2 content">
             <h2>About Clinic</h2>
             <p><span>City: </span> {{userData.city}}</p>
             <p><span>Area: </span> {{userData.area}}</p>
-            <p><span>Fees: </span> {{userData.price}}</p>
+            <p><span>Fees: </span> {{userData.Price}}</p>
           </div>
         </div>
       </div>
       <div class="col-9">
-        <h1>{{userData.name}}</h1>
-        <h5>{{userData.title}}</h5>
+        <h1>{{userData.Name}}</h1>
+        <h5>{{userData.Title}}</h5>
         <div class="tabs">
           <mat-tab-group>
             <mat-tab>
@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-5 my-2">
                   <ul>
-                    <li>{{userData.name}}</li>
+                    <li>{{userData.Name}}</li>
                     <li>{{userData.email}}</li>
                     <li>{{userData.phone}}</li>
                     <li>{{userData.status}}</li>
@@ -77,13 +77,13 @@
               <div class="row ulContainer" id="ulContainer">
                 <div class="col-1 my-2">
                   <ul>
-                    <li>BIO</li>
+                    <li>Information</li>
                     <li>Address</li>
                   </ul>
                 </div>
                 <div class="col-5 my-2">
                   <ul>
-                    <li>{{userData.BIO}}</li>
+                    <li>{{userData.Information}}</li>
                     <li>{{userData.address}}</li>
                   </ul>
                 </div>
@@ -106,28 +106,29 @@
                     (ngSubmit)="EditProfile()">
                       <div class="row">
                         <mat-form-field appearance="legacy" class="col-6">
-                          <mat-label>Enter BIO in English</mat-label>
-                          <input matInput formControlName="BIO" name="BIO" #BIO>
+                          <mat-label>Enter Information in English</mat-label>
+                          <input matInput formControlName="Information" name="Information" #BIO>
                           <button mat-icon-button matSuffix >
                             <mat-icon>info</mat-icon>
                           </button>
-                          <mat-error *ngIf="hasErr('BIO', 'minlength')">
+                          <mat-error *ngIf="hasErr('Information', 'minlength')">
                             you must enter 5 characters at least
                           </mat-error>
-                          <mat-error *ngIf="hasErr('BIO', 'pattern')">
+                          <mat-error *ngIf="hasErr('Information', 'pattern')">
                             you must type here in English only
                           </mat-error>
                         </mat-form-field>
                         <mat-form-field appearance="legacy" class="col-6">
-                          <mat-label>Enter BIO in Arabic</mat-label>
-                          <input matInput formControlName="BIOAR" name="BIOAR" #BIOAR>
+                          <mat-label>Enter Information in Arabic</mat-label>
+                          <input matInput formControlName="InformationInArabic"
+                          name="InformationInArabic" #BIOAR>
                           <button mat-icon-button matSuffix >
                             <mat-icon>info</mat-icon>
                           </button>
-                          <mat-error *ngIf="hasErr('BIOAR', 'minlength')">
+                          <mat-error *ngIf="hasErr('InformationInArabic', 'minlength')">
                             you must enter 5 characters at least
                           </mat-error>
-                          <mat-error *ngIf="hasErr('BIOAR', 'pattern')">
+                          <mat-error *ngIf="hasErr('InformationInArabic', 'pattern')">
                             you must type here in Arabic only
                           </mat-error>
                         </mat-form-field>
@@ -156,19 +157,26 @@
                           </mat-error>
                         </mat-form-field>
                       </div>
-
-
-                      <mat-form-field appearance="legacy">
+                      <div class="row py-3">
+                        <label for="pic" class="col-2">Image </label>
+                        <input id="pic" class="form-control col-7 w-50"
+                        formControlName="Image" name="Image"
+                        type="file" (change)="preview($event)">
+                        <small class="text-danger" *ngIf="hasErr('Image', 'required')">
+                          this field is required now
+                        </small>
+                      </div>
+                      <!-- <mat-form-field appearance="legacy">
                         <mat-label>Enter Image</mat-label>
-                        <input matInput name="img" #img url
-                        formControlName="img">
+                        <input matInput name="Image" #img url
+                        formControlName="Image">
                         <button mat-icon-button matSuffix >
                           <mat-icon>photo_camera</mat-icon>
                         </button>
                         <mat-error>
                           This field is required
                         </mat-error>
-                      </mat-form-field>
+                      </mat-form-field> -->
                       <!-- <div class="row py-3">
                         <div class="col-6">
                           <mat-label>Gender</mat-label>

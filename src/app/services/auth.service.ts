@@ -92,13 +92,14 @@ export class AuthService {
   addUser(data: any) {
     const currentUID = localStorage.getItem('user') ? localStorage.getItem('user') : null;
     const jsonData = JSON.parse(currentUID!);
-    return this._firestore.collection('users')
+    return this._firestore.collection('/Doctors_Collection/WOB3F9GigX8UX0O1v8zE/GeneralDoctors')
     .doc(jsonData.uid).set({
-      "name": data.name,
+      "Name": data.Name,
       "email": data.email,
       "phone": data.phone,
       "status": "pending",
       "id": jsonData.uid, //need in redirect profile/id
+      "Image": "https://firebasestorage.googleapis.com/v0/b/vezeeta-website-db.appspot.com/o/DoctorCall%2Fdownload.png?alt=media&token=541333e3-c6e1-41ba-b296-c1a9dcb5920e"
     })
     .then(res => {
       console.log('res', res);
@@ -110,7 +111,7 @@ export class AuthService {
   }
 
   getUser(id: string) {
-    let userData = this._firestore.collection('users').doc(id)
+    let userData = this._firestore.collection('/Doctors_Collection/WOB3F9GigX8UX0O1v8zE/GeneralDoctors').doc(id)
     .get();
     return userData.toPromise()
   }
@@ -118,7 +119,7 @@ export class AuthService {
   async getUserByEmail(email: string) {
     let result;
     try {
-      let user = await this._firestore.collection('users',
+      let user = await this._firestore.collection('/Doctors_Collection/WOB3F9GigX8UX0O1v8zE/GeneralDoctors',
       (ref) => ref.where('email', "==" , email)).get().toPromise();
       let userDate = user?.docs[0].data();
       result = userDate;
@@ -129,7 +130,7 @@ export class AuthService {
   }
 
   EditProfile(id: string, data:any) {
-    let userData = this._firestore.collection('users').doc(id)
+    let userData = this._firestore.collection('/Doctors_Collection/WOB3F9GigX8UX0O1v8zE/GeneralDoctors').doc(id)
     .update(data);
     userData.then(res => {
       console.log('res', res);

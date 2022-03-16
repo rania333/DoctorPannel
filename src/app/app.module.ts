@@ -17,6 +17,12 @@ import { DialogComponent } from './components/dialog/dialog.component';
 import { AuthDialogComponent } from './components/auth-dialog/auth-dialog.component';
 import { HeaderComponent } from './components/header/header.component';
 import { BirthdayPipe } from './pipes/birthday.pipe';
+import {AngularFireStorageModule} from '@angular/fire/compat/storage';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { provideFirebaseApp } from '@angular/fire/app';
+import { initializeApp } from 'firebase/app';
+import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
+
 
 @NgModule({
   declarations: [
@@ -37,7 +43,12 @@ import { BirthdayPipe } from './pipes/birthday.pipe';
     AngularMaterialModule,
     ReactiveFormsModule,
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig)
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireStorageModule,
+    provideStorage(() => getStorage()),
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+    AngularFirestoreModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

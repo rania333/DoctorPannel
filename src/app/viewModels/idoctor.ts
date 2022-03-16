@@ -1,28 +1,28 @@
 export interface IDoctor {
   //from signup
   id?: string,
-  name: string,
-  nameAR: string
+  Name: string,
+  nameInArabic: string
   email: string,
   phone: string,
   status: string,
   //from admin
   city?: string,
-  cityAR?: string,
   area?: string,
-  areaAR?: string,
   dpt?: string,
   dptAR?: string,
-  title?: string,
-  titleAR?: string,
-  price?: string,
+  Title?: string,
+  titleInArabic?: string,
+  Price?: string,
   nationalID?: string,
+  Department: string,
+  departmentInArabic: string,
   //from doctor
-  BIO?: string,
-  BIOAR?: string,
+  Information?: string,
+  InformationInArabic?: string,
   address?: string,
   addressAR?:string,
-  img?: string,
+  Image?: string,
   //drived
   DOB?: string,
 }
