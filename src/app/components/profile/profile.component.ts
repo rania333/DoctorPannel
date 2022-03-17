@@ -24,7 +24,7 @@ export class ProfileComponent implements OnInit {
     this._activatedRoute.paramMap.subscribe( async params => {
       let id = params.get('id');
       this.currentID = id!;
-    const user =  await this.authSer.getUser(id!);
+      const user =  await this.authSer.getUser(id!);
       const myData:any = user?.data();
       this.userData = myData;
       //set values to input to enable update btn without any changes
@@ -67,23 +67,25 @@ export class ProfileComponent implements OnInit {
   EditProfile() {
     if(!this.selectedImg) {
       let data = this.userProfile.value;
+      console.log('my data', data);
       this.authSer.EditProfile(this.currentID, {...data});
     } else {
-      this._storage.ref(`/DoctorCall/${this.selectedImg.name}`)
+      this._storage.ref(`/DoctorCall/${this.selectedImg?.name}`)
       .put(this.selectedImg).snapshotChanges().subscribe(data => {
         data?.ref.getDownloadURL().then(ref => {
           let data = this.userProfile.value;
+          console.log('my data', data);
           this.authSer.EditProfile(this.currentID, {...data, Image: ref});
         })
       })
     }
 
     //set values to input to enable update btn without any changes
-    this.userProfile.controls['Information'].setValue('');
-    this.userProfile.controls['InformationInArabic'].setValue('');
-    this.userProfile.controls['address'].setValue('');
-    this.userProfile.controls['addressAR'].setValue('');
-    this.userProfile.controls['Image'].setValue('');
+    // this.userProfile.controls['Information'].setValue('');
+    // this.userProfile.controls['InformationInArabic'].setValue('');
+    // this.userProfile.controls['address'].setValue('');
+    // this.userProfile.controls['addressAR'].setValue('');
+    // this.userProfile.controls['Image'].setValue('');
   }
 }
 
