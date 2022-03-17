@@ -95,6 +95,7 @@ export class AuthService {
     return this._firestore.collection('/Doctors_Collection/WOB3F9GigX8UX0O1v8zE/GeneralDoctors')
     .doc(jsonData.uid).set({
       "Name": data.Name,
+      "nameInArabic":data.nameInArabic,
       "email": data.email,
       "phone": data.phone,
       "status": "pending",

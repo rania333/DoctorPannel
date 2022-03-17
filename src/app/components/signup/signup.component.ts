@@ -33,7 +33,8 @@ export class SignupComponent implements OnInit {
     }
   }
 
-  async onSignup(email: string, pass: string, phone:string, Name: string, nameInArabic: String) {
+  async onSignup(email: string, pass: string, phone:string, Name: string,
+    nameInArabic: string) {
     await this.authSer.signUp(email, pass)
     .then(done => {
       //add to user collection
