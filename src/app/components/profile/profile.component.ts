@@ -2,10 +2,10 @@ import { IDoctor } from './../../viewModels/idoctor';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { async } from '@angular/core/testing';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import 'ng2-validation';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+// import { setInterval } from 'timers';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -16,6 +16,7 @@ export class ProfileComponent implements OnInit {
   userData: IDoctor = {} as IDoctor;
   selectedImg!: File;
   userProfile = new FormGroup({});
+  timeTable = new FormGroup({});
   constructor(private _activatedRoute: ActivatedRoute,
         private authSer: AuthService, private _builder: FormBuilder,
         private _storage:AngularFireStorage) { }
@@ -43,6 +44,12 @@ export class ProfileComponent implements OnInit {
       //4 elnoha str, cairo
       Image: [''],
     })
+    //handle timetable
+    this.timeTable = this._builder.group({
+      day: ['', [Validators.required]],
+      from: ['', [Validators.required]],
+      to: ['', [Validators.required]]
+    });
   }
 
   hasErr(control: string, err: string): boolean {
@@ -74,7 +81,6 @@ export class ProfileComponent implements OnInit {
       .put(this.selectedImg).snapshotChanges().subscribe(data => {
         data?.ref.getDownloadURL().then(ref => {
           let data = this.userProfile.value;
-          console.log('my data', data);
           this.authSer.EditProfile(this.currentID, {...data, Image: ref});
         })
       })
@@ -86,6 +92,46 @@ export class ProfileComponent implements OnInit {
     // this.userProfile.controls['address'].setValue('');
     // this.userProfile.controls['addressAR'].setValue('');
     // this.userProfile.controls['Image'].setValue('');
+  }
+
+  updateTimetable() {
+    //extract doctor data
+    const day = new Date(this.timeTable.controls['day'].value).toString().split(" ")[0];
+    const date = new Date(this.timeTable.controls['day'].value).toLocaleDateString(); //m/d/yyyy
+    const from = this.timeTable.controls['from'].value;
+    const to = this.timeTable.controls['to'].value;
+    //assign time to date
+    var setFromToDate = new Date(date).setHours(from.split(":")[0], from.split(":")[1]);
+    var setToDate = new Date(date).setHours(to.split(":")[0], to.split(":")[1]);
+    var fromHours = new Date(setFromToDate);
+    var toHours = new Date(setToDate);
+    const timeTables:any = {
+      day: day,
+      date: date,
+      hours: []
+    };
+    var getCurrentTime2 = new Date(fromHours).getHours() + ':' +new Date(fromHours).getMinutes();
+    var test = fromHours;
+    while(test.getTime() <= toHours.getTime()) {
+      timeTables.hours.push({hour: getCurrentTime2, status: 'empty'})
+      test = new Date(test);
+      test.setMinutes(test.getMinutes() + 30)
+      getCurrentTime2 =new Date(test).getHours() + ':' +new Date(test).getMinutes();
+    }
+
+    //get current times
+    const prevTimes = this.authSer.getUser(this.currentID).then(d => {
+      var currentTimes:any = d?.data();
+      // var prev = currentTimes.timeTables.push(timeTables);
+      console.log(currentTimes.timeTables);
+      var newTimes = [currentTimes.timeTables, timeTables];
+      //update
+      this.authSer.EditProfile(this.currentID, {
+        timeTables: newTimes
+      })
+    })
+
+    console.log('final', timeTables);
   }
 }
 

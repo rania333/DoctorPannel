@@ -199,6 +199,52 @@
 
             <mat-tab>
               <ng-template mat-tab-label>
+                <mat-icon class="example-tab-icon">add</mat-icon>
+                clinic hours
+              </ng-template>
+
+              <form (ngSubmit)="updateTimetable()" [formGroup]="timeTable">
+                <div class="container">
+                  <div class="row my-3">
+                    <div class="col-4">
+                      <h1>
+                        Day/Date
+                      </h1>
+                    </div>
+                    <div class="col-8">
+                      <mat-form-field appearance="fill">
+                        <mat-label>Choose a date</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="day">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row my-3">
+                    <h2>Working hours</h2>
+                    <div class="col-4">
+                      <mat-form-field class="example-full-width" appearance="fill">
+                        <mat-label>From</mat-label>
+                        <input type="time" matInput formControlName="from">
+                      </mat-form-field>
+                    </div>
+                    <div class="col-4">
+                      <mat-form-field class="example-full-width" appearance="fill">
+                        <mat-label>To</mat-label>
+                        <input type="time" matInput formControlName="to">
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row my-3">
+                    <button mat-stroked-button
+                      type="submit" class="w-25 mx-5" id="btn">Save</button>
+                  </div>
+                </div>
+              </form>
+            </mat-tab>
+
+            <mat-tab>
+              <ng-template mat-tab-label>
                 <mat-icon class="example-tab-icon">event</mat-icon>
                 Timetable
               </ng-template>
