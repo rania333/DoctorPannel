@@ -17,6 +17,9 @@ export class ProfileComponent implements OnInit {
   selectedImg!: File;
   userProfile = new FormGroup({});
   timeTable = new FormGroup({});
+  doctorTimes = [];
+  //to store booked times
+  bookedTime:any = [];
   constructor(private _activatedRoute: ActivatedRoute,
         private authSer: AuthService, private _builder: FormBuilder,
         private _storage:AngularFireStorage) { }
@@ -50,6 +53,22 @@ export class ProfileComponent implements OnInit {
       from: ['', [Validators.required]],
       to: ['', [Validators.required]]
     });
+
+    //get data
+    this.authSer.getUser(this.currentID).then(data => {
+      const times: any = data?.data();
+      const myTimes = times.timeTables;
+      myTimes.map((singleDay: { hours: any[]; })=> {
+        let data:any = singleDay
+        singleDay.hours.map((time: { status: string; }) => {
+          if(time.status == 'busy') {
+            this.bookedTime.push({...time,day:data.day, date:data.date})
+          }
+        })
+      })
+      console.log('my data', times.timeTables);
+      console.log('booked', this.bookedTime);
+    })
   }
 
   hasErr(control: string, err: string): boolean {
@@ -124,14 +143,12 @@ export class ProfileComponent implements OnInit {
       var currentTimes:any = d?.data();
       // var prev = currentTimes.timeTables.push(timeTables);
       console.log(currentTimes.timeTables);
-      var newTimes = [currentTimes.timeTables, timeTables];
-      //update
+      var newTimes =  timeTables;
+      // update
       this.authSer.EditProfile(this.currentID, {
-        timeTables: newTimes
+        timeTables: [...currentTimes.timeTables, timeTables]
       })
     })
-
-    console.log('final', timeTables);
   }
 }
 
