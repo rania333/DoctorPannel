@@ -58,7 +58,7 @@ export class ProfileComponent implements OnInit {
     this.authSer.getUser(this.currentID).then(data => {
       const times: any = data?.data();
       const myTimes = times.timeTables;
-      myTimes.map((singleDay: { hours: any[]; })=> {
+      myTimes && myTimes.map((singleDay: { hours: any[]; })=> {
         let data:any = singleDay
         singleDay.hours.map((time: { status: string; }) => {
           if(time.status == 'busy') {
@@ -79,6 +79,18 @@ export class ProfileComponent implements OnInit {
       } else {
         return false
       }
+
+  }
+
+  hasErr2(control: string, err: string): boolean {
+    if((this.timeTable.controls[control].dirty) &&
+      (this.timeTable.controls[control].invalid) &&
+      (this.timeTable.controls[control].errors?.[err])) {
+        return true
+      } else {
+        return false
+      }
+
   }
 
   get Gender(): string {
@@ -146,7 +158,7 @@ export class ProfileComponent implements OnInit {
       var newTimes =  timeTables;
       // update
       this.authSer.EditProfile(this.currentID, {
-        timeTables: [...currentTimes.timeTables, timeTables]
+        timeTables: currentTimes.timeTables ?[...currentTimes.timeTables, timeTables]: [timeTables]
       })
     })
   }

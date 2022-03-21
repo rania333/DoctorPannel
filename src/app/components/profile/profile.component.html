@@ -214,9 +214,13 @@
                     <div class="col-8">
                       <mat-form-field appearance="fill">
                         <mat-label>Choose a date</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="day">
+                        <input matInput [matDatepicker]="picker" formControlName="day"
+                        name="day">
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
+                        <mat-error *ngIf="hasErr2('day', 'required')">
+                          this field is required
+                        </mat-error>
                       </mat-form-field>
                     </div>
                   </div>
@@ -225,19 +229,27 @@
                     <div class="col-4">
                       <mat-form-field class="example-full-width" appearance="fill">
                         <mat-label>From</mat-label>
-                        <input type="time" matInput formControlName="from">
+                        <input type="time" matInput formControlName="from" name="from">
+                        <mat-error *ngIf="hasErr2('from', 'required')">
+                          this field is required
+                        </mat-error>
                       </mat-form-field>
                     </div>
                     <div class="col-4">
                       <mat-form-field class="example-full-width" appearance="fill">
                         <mat-label>To</mat-label>
-                        <input type="time" matInput formControlName="to">
+                        <input type="time" matInput formControlName="to"
+                        name="to">
+                        <mat-error *ngIf="hasErr2('to', 'required')">
+                          this field is required
+                        </mat-error>
                       </mat-form-field>
                     </div>
                   </div>
                   <div class="row my-3">
                     <button mat-stroked-button
-                      type="submit" class="w-25 mx-5" id="btn">Save</button>
+                      type="submit" class="w-25 mx-5" id="btn"
+                      [disabled]="timeTable.invalid">Save</button>
                   </div>
                 </div>
               </form>
