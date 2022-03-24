@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import 'ng2-validation';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { AnyARecord } from 'dns';
 // import { setInterval } from 'timers';
 @Component({
   selector: 'app-profile',
@@ -20,9 +21,14 @@ export class ProfileComponent implements OnInit {
   doctorTimes = [];
   //to store booked times
   bookedTime:any = [];
+  freeTime: any = [];
+  newAppointments: any;
+  currentDate = new Date()
   constructor(private _activatedRoute: ActivatedRoute,
         private authSer: AuthService, private _builder: FormBuilder,
-        private _storage:AngularFireStorage) { }
+        private _storage:AngularFireStorage) {
+          this.newAppointments = [];
+        }
 
   ngOnInit(): void {
     this._activatedRoute.paramMap.subscribe( async params => {
@@ -61,8 +67,10 @@ export class ProfileComponent implements OnInit {
       myTimes && myTimes.map((singleDay: { hours: any[]; })=> {
         let data:any = singleDay
         singleDay.hours.map((time: { status: string; }) => {
-          if(time.status == 'busy') {
+          if(time.status != 'empty' && time.status != 'cancel') {
             this.bookedTime.push({...time,day:data.day, date:data.date})
+          } else if(time.status == 'empty') {
+            this.freeTime.push({...time,day:data.day, date:data.date});
           }
         })
       })
@@ -161,6 +169,49 @@ export class ProfileComponent implements OnInit {
         timeTables: currentTimes.timeTables ?[...currentTimes.timeTables, timeTables]: [timeTables]
       })
     })
+  }
+
+  Cancel(e: any) {
+    //delete prev values
+    this.newAppointments= [];
+    //console.log('hello', e); //da kda obj feh date w day w hour w status
+    this.authSer.getUser(this.currentID).then(data => {
+      const actualData:any = data?.data();
+      const times = actualData.timeTables;
+      times.map((time: any) => {
+        if(time.date === e.date) {
+          time.hours.map((hour: { hour: any; }) => {
+            if(hour.hour === e.hour) {
+              const afterCancel = {
+                hour: hour.hour,
+                status: 'cancel'
+              }
+              //edit in array
+              const newObj = {
+                date: time.date,
+                day: time.day,
+                hours: time.hours.filter((oldHour: { hour: any; }) => oldHour.hour !== hour.hour)
+              }
+              newObj.hours.push(afterCancel);
+              // console.log('crnt obj', time); //da obj kaml l b3dl feh
+              // console.log('sec true', afterCancel);//new hour after edit
+              // console.log('newObj', newObj);
+              this.newAppointments.push(newObj)
+            }
+
+          })
+        } else {
+          this.newAppointments.push(time);
+        }
+      })
+      //console.log('time', times);
+      console.log('newAppointments2', this.newAppointments);
+      //edit here
+      this.authSer.EditProfile(this.currentID, {
+        timeTables: this.newAppointments
+      });
+    })
+    //console.log('newAppointments', this.newAppointments);
   }
 }
 
